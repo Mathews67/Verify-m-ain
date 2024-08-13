@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "verify_backend": {
+      "main": "src/verify_backend/main.mo",
+      "type": "motoko"
+    },
+    "verify_frontend": {
+      "dependencies": [
+        "verify_backend"
+      ],
+      "source": [
+        "src/verify_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "verify_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
