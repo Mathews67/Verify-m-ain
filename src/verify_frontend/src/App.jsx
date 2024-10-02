@@ -4,7 +4,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Register from './components/Register';
 import Login from './components/Login';
 import Verify from './components/Verify';
-import Dashboard from './components/Dashboard'; // Import the Dashboard component
+import Dashboard from './components/Dashboard';
+
 
 function App() {
   const route = createBrowserRouter([
@@ -16,6 +17,7 @@ function App() {
       path: "/Verify",
       element: <Verify />,
     },
+  
     {
       path: "/",
       element: <Login />,

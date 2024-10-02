@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { verify_backend } from 'declarations/verify_backend';
 import './Dashboard.css';
+import QRCode from 'react-qr-code';
+import jsPDF from 'jspdf';
 
 const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
@@ -12,8 +14,19 @@ const Dashboard = () => {
     year_of_completion: '',
     courses: ''
   });
+  const [qrCodeValue, setQrCodeValue] = useState('');
+  const [generatedCode, setGeneratedCode] = useState('');
   const [totalCertificates, setTotalCertificates] = useState(0);
   const [totalTranscripts, setTotalTranscripts] = useState(0);
+
+  const courseOptions = [
+    { name: "English Language" },
+    { name: "Mathematics" },
+    { name: "Science" },
+    { name: "Chemistry" },
+    { name: "Physics" },
+    { name: "Biology" }
+  ];
 
   useEffect(() => {
     fetchTotals();
@@ -47,6 +60,8 @@ const Dashboard = () => {
       year_of_completion: '',
       courses: ''
     });
+    setGeneratedCode('');
+    setQrCodeValue('');
   };
 
   const handleChange = (e) => {
@@ -54,6 +69,14 @@ const Dashboard = () => {
     setFormData(prevState => ({
       ...prevState,
       [name]: value
+    }));
+  };
+
+  const handleCourseChange = (e) => {
+    const selectedCourses = Array.from(e.target.selectedOptions, option => option.value);
+    setFormData(prevState => ({
+      ...prevState,
+      courses: selectedCourses.join(', ')
     }));
   };
 
@@ -67,23 +90,34 @@ const Dashboard = () => {
           formData.program,
           formData.year_of_completion
         );
-        console.log('Generated Certificate Code:', result);
+        setGeneratedCode(result);
+        setQrCodeValue(result); // QR code will be generated from the document code
       } else if (formType === 'transcript') {
-        const courses = formData.courses.split(',').map(course => course.trim());
         const result = await verify_backend.createTranscript(
           formData.student_id,
           formData.name,
           formData.program,
           formData.year_of_completion,
-          courses
+          formData.courses.split(',').map(course => course.trim())
         );
-        console.log('Generated Transcript Code:', result);
+        setGeneratedCode(result);
+        setQrCodeValue(result);
       }
       fetchTotals(); // Update totals after generation
-      handleCloseForm();
     } catch (error) {
       console.error("Error generating document:", error);
     }
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text(`Document Code: ${generatedCode}`, 10, 10);
+    doc.text(`Name: ${formData.name}`, 10, 20);
+    doc.text(`Program: ${formData.program}`, 10, 30);
+    doc.text(`Year of Completion: ${formData.year_of_completion}`, 10, 40);
+    doc.text(`Courses: ${formData.courses}`, 10, 50);
+    doc.addImage(document.getElementById('qrcode').toDataURL(), 'PNG', 10, 60, 50, 50);
+    doc.save('document.pdf');
   };
 
   return (
@@ -92,9 +126,6 @@ const Dashboard = () => {
         <h1>Dashboard</h1>
         <a href="#" onClick={(e) => handleGenerate(e, 'certificate')}>Generate Certificate</a>
         <a href="#" onClick={(e) => handleGenerate(e, 'transcript')}>Generate Transcripts</a>
-        <a href="#" onClick={(e) => handleGenerate(e, 'certificate')}>View Certificate</a>
-        <a href="#" onClick={(e) => handleGenerate(e, 'transcript')}>View Transcripts</a>
-        <a href="#" onClick={(e) => handleGenerate(e, 'transcript')}>settings</a>
         <div className="logout">
           <a href="#">Logout</a>
         </div>
@@ -138,12 +169,26 @@ const Dashboard = () => {
               </label>
               {formType === 'transcript' && (
                 <label>
-                  Courses (comma separated):
-                  <input type="text" name="courses" value={formData.courses} onChange={handleChange} />
+                  Courses:
+                  <select multiple={true} onChange={handleCourseChange}>
+                    {courseOptions.map((course, index) => (
+                      <option key={index} value={course.name}>{course.name}</option>
+                    ))}
+                  </select>
                 </label>
               )}
               <button type="submit">Submit</button>
             </form>
+
+            {generatedCode && (
+              <div>
+                <h3>Generated {formType === 'certificate' ? 'Certificate' : 'Transcript'} Code: {generatedCode}</h3>
+                <div id="qrcode">
+                  <QRCode value={qrCodeValue} />
+                </div>
+                <button onClick={handleDownloadPDF}>Download PDF</button>
+              </div>
+            )}
           </div>
         </div>
       )}
