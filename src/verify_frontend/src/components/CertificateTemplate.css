@@ -1,0 +1,105 @@
+/* CertificateTemplate.css */
+
+/* Universal settings for the certificate container */
+.certificate-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 40px;
+    border: 10px solid #0d6efd; /* Border for the outer part of the certificate */
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Times New Roman', Times, serif;
+    color: #333;
+    text-align: center;
+    position: relative;
+  }
+  
+  /* Heading for the certificate */
+  .certificate-container h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0d6efd; /* Primary color for heading */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 10px;
+    letter-spacing: 1.5px;
+  }
+  
+  /* Subheading for certificate, such as "This is to certify" */
+  .certificate-container p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #444;
+  }
+  
+  /* Student name styling */
+  .certificate-container h2 {
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Course name styling */
+  .certificate-container h3 {
+    font-size: 1.7rem;
+    color: #0d6efd;
+    font-weight: bold;
+    margin-bottom: 20px;
+    letter-spacing: 1.2px;
+  }
+  
+  /* Date and signature styling */
+  .certificate-container .issue-date,
+  .certificate-container .signature {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 20px;
+  }
+  
+  .certificate-container .issue-date {
+    margin-bottom: 40px;
+  }
+  
+  .certificate-container .signature {
+    margin-top: 40px;
+    text-align: right;
+    font-style: italic;
+    padding-right: 50px;
+  }
+  
+  /* Decorative elements */
+  .certificate-container::before,
+  .certificate-container::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-image: url('https://via.placeholder.com/100'); /* Replace with actual logo */
+    background-size: cover;
+    top: 20px;
+  }
+  
+  .certificate-container::before {
+    left: 20px;
+  }
+  
+  .certificate-container::after {
+    right: 20px;
+  }
+  
+  /* Footer section for additional information */
+  .certificate-footer {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    font-style: italic;
+  }
+  
+  

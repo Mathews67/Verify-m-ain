@@ -3,7 +3,6 @@ import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { verify_backend } from 'declarations/verify_backend';
 
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +22,10 @@ const Login = () => {
       if ("ok" in result) {
         console.log("Login successful");
         alert(result.ok);
+
+        // Store email in localStorage
+        localStorage.setItem("userEmail", email);
+
         navigate("/dashboard");
       } else {
         console.log("Login failed:", result.err);
