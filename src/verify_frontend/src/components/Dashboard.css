@@ -68,40 +68,59 @@ body {
 
 .cards {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between; /* Space between cards */
   margin-bottom: 20px;
 }
 
 .card {
-  width: 30%; /* Reduced width for cards */
-  padding: 10px; /* Reduced padding */
-  background-color: #ffffff;
+  width: 22%; /* Width for other cards */
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease; /* Added opacity transition */
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
 
 .card h3 {
-  margin-bottom: 10px; /* Adjusted margin for heading */
+  margin-bottom: 10px;
   color: #2d6a4f;
 }
 
-/* Hover effect for all cards */
+/* Unique background colors for each card */
+.card.transcripts {
+  background-color: #ffdd57; /* Light Yellow */
+}
+
+.card.certificates {
+  background-color: #ff6b6b; /* Light Red */
+}
+
+.card.financial {
+  background-color: #4caf50; /* Green */
+}
+
+.card.registered-institutions {
+  background-color: #2196f3; /* Light Blue */
+}
+
+.card.barchart {
+  background-color: #ffffff; /* White for the chart card */
+  width: 35%; /* Increased width for the barchart card */
+  height: 400px; /* Adjust height to fit the bar chart */
+  padding: 15px; /* Increased padding for better content spacing */
+  box-sizing: border-box; /* Ensures padding is included in width/height */
+  overflow: hidden; /* Prevents overflow of bar chart */
+}
+
+.card.barchart > .recharts-wrapper {
+  width: 100%; /* Ensure the bar chart takes the full width of the card */
+  height: 100%; /* Ensure the bar chart takes the full height of the card */
+}
+
 .card:hover {
-  background-color: rgba(224, 224, 224, 0.8); /* Gray background with opacity on hover */
-  transform: translateY(-5px); /* Slight lift effect */
-  opacity: 0.9; /* Reduce opacity on hover for a subtle effect */
-}
-
-/* Specific styles for pie chart cards */
-.card.pie-chart {
-  height: 200px; /* Adjust height for pie chart cards */
-}
-
-/* Adjust styles for the form card */
-.card.form-card {
-  height: auto; /* Allow height to adjust based on content */
+  background-color: rgba(224, 224, 224, 0.8);
+  transform: translateY(-5px);
+  opacity: 0.9;
 }
 
 /* Popup styles */
@@ -168,4 +187,38 @@ body {
 
 .popup-content button:hover {
   opacity: 0.8;
+}
+
+/* Chatboard styles */
+.chatboard {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.chat-messages {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  padding: 10px;
+}
+
+.chat-message {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.chat-form {
+  display: flex;
+}
+
+.chat-form input {
+  flex: 1;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.chat-form button {
+  padding: 5px 10px;
 }

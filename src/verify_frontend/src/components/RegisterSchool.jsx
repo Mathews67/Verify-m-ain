@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import './RegisterSchool.css'; // Add any necessary CSS styles
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa'; // Importing icons
+import './RegisterSchool.css';
+import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 const RegisterSchool = () => {
   const [schools, setSchools] = useState([]);
   const [schoolName, setSchoolName] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const [totalSchools, setTotalSchools] = useState(0); // New state to track total registered institutions
 
-  // Default school names
   const defaultSchools = [
     'Chalimbana University',
     'Mukuba University',
@@ -24,8 +24,11 @@ const RegisterSchool = () => {
     fetchSchools();
   }, []);
 
+  useEffect(() => {
+    setTotalSchools(schools.length); // Automatically update the total number of schools
+  }, [schools]);
+
   const fetchSchools = async () => {
-    // Replace with your actual fetch logic to get schools
     const response = await fetch('/api/schools');
     const data = await response.json();
     setSchools(data);
@@ -47,7 +50,6 @@ const RegisterSchool = () => {
   };
 
   const addSchool = async (school) => {
-    // Implement your API logic to add a new school
     await fetch('/api/schools', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -56,7 +58,6 @@ const RegisterSchool = () => {
   };
 
   const updateSchool = async (updatedSchools) => {
-    // Implement your API logic to update the school
     await fetch('/api/schools', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -78,7 +79,6 @@ const RegisterSchool = () => {
   };
 
   const deleteSchool = async (school) => {
-    // Implement your API logic to delete a school
     await fetch(`/api/schools/${school.name}`, {
       method: 'DELETE',
     });
@@ -109,6 +109,9 @@ const RegisterSchool = () => {
         </button>
         <button type="button" onClick={resetForm} className="cancel-btn">Cancel</button>
       </form>
+      
+      <h3>Total Registered Institutions: {totalSchools}</h3> {/* Display total institutions */}
+      
       <ul>
         {schools.map((school, index) => (
           <li key={index}>
