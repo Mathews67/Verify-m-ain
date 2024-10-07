@@ -1,127 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Two-Part Form</title>
-  <style>
-    /* Your existing CSS for layout and form */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
+/* TranscriptGenerator.css */
 
-    .dashboard {
-      display: flex;
-    }
+/* General styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
 
-    .main-content {
-      margin-left: 260px;
-      padding: 20px;
-      flex: 1;
-    }
+/* Layout */
+.dashboard {
+  display: flex;
+}
 
-    .form-container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+.main-content {
+  margin-left: 260px;
+  padding: 20px;
+  flex: 1;
+}
 
-    h2 {
-      text-align: center;
-      color: #2d6a4f;
-    }
+/* Form container styling */
+.form-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
-    .input-field {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
+/* Form title */
+h2 {
+  text-align: center;
+  color: #2d6a4f;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
 
-    .button {
-      width: 100%;
-      padding: 10px;
-      background-color: #52b788;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+/* Input field styling */
+.input-field {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.3s;
+}
 
-    .button:hover {
-      background-color: #45a049;
-    }
+.input-field:focus {
+  border-color: #52b788;
+  outline: none;
+}
 
-    /* Hide the second part of the form by default */
-    .form-part {
-      display: none;
-    }
+/* Button styling */
+.button {
+  width: 100%;
+  padding: 10px;
+  background-color: #52b788;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-    /* Display the part that's currently active */
-    .active {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <div class="dashboard">
-    <div class="main-content">
-      <h2>Two-Part Form</h2>
-      <div class="form-container">
-        <form id="multi-part-form">
-          <!-- First part of the form -->
-          <div id="part1" class="form-part active">
-            <label for="name" class="label">Name:</label>
-            <input type="text" id="name" class="input-field" placeholder="Enter your name" required>
+.button:hover {
+  background-color: #45a049;
+}
 
-            <label for="email" class="label">Email:</label>
-            <input type="email" id="email" class="input-field" placeholder="Enter your email" required>
+/* QR code container */
+#qrcode {
+  text-align: center;
+  margin: 20px 0;
+}
 
-            <button type="button" class="button" id="next">Next</button>
-          </div>
+/* Reduced margin for compact view */
+label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
 
-          <!-- Second part of the form -->
-          <div id="part2" class="form-part">
-            <label for="address" class="label">Address:</label>
-            <input type="text" id="address" class="input-field" placeholder="Enter your address" required>
+/* Footer or additional info style */
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 20px;
+}
 
-            <label for="phone" class="label">Phone Number:</label>
-            <input type="tel" id="phone" class="input-field" placeholder="Enter your phone number" required>
-
-            <button type="button" class="button" id="back">Back</button>
-            <button type="submit" class="button">Submit</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const nextButton = document.getElementById('next');
-    const backButton = document.getElementById('back');
-    const part1 = document.getElementById('part1');
-    const part2 = document.getElementById('part2');
-
-    nextButton.addEventListener('click', () => {
-      part1.classList.remove('active');
-      part2.classList.add('active');
-    });
-
-    backButton.addEventListener('click', () => {
-      part2.classList.remove('active');
-      part1.classList.add('active');
-    });
-  </script>
-</body>
-</html>
+/* Additional spacing */
+.form-container div {
+  margin-bottom: 16px;
+}

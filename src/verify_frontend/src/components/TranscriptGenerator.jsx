@@ -11,7 +11,6 @@ const TranscriptGenerator = ({ fetchTotals }) => {
     program: '',
     year_of_completion: '',
     courses: '',
-    grade: '',
     year_of_study: ''
   });
   const [generatedCode, setGeneratedCode] = useState('');
@@ -24,18 +23,27 @@ const TranscriptGenerator = ({ fetchTotals }) => {
     'Brian Lupasa Muwema', 'Jacob Shinde', 'Flaviour Chipamba'
   ];
 
-  const courseOptions = [
-    'English Language', 'Mathematics', 'Science', 
-    'Chemistry', 'Physics', 'Biology'
+  const programOptions = [
+    'Bachelor of Computer Science', 'Database Management System', 'Banking and Finance',
+    'Food Science and Nutrition', 'Bachelor of Science in Transport and Logistics',
+    'Bachelor of Business Administration', 'Human Resource Management'
   ];
 
-  const gradeOptions = ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12'];
-  
+  const courseOptions = [
+    'Database Management System', 'Information Security', 'Data Science', 
+    'Project Management', 'Digital Forensics', 'Banking and Finance'
+  ];
+
   const yearOfStudyOptions = ['First Year', 'Second Year', 'Third Year', 'Fourth Year'];
+
+  const yearOfCompletionOptions = Array.from(
+    { length: 2024 - 2000 + 1 },
+    (v, k) => 2000 + k
+  ); // Years from 2000 to 2024
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value
     }));
@@ -43,7 +51,7 @@ const TranscriptGenerator = ({ fetchTotals }) => {
 
   const handleCourseChange = (e) => {
     const selectedCourses = Array.from(e.target.selectedOptions, option => option.value);
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       courses: selectedCourses.join(', ')
     }));
@@ -75,8 +83,7 @@ const TranscriptGenerator = ({ fetchTotals }) => {
     doc.text(`Program: ${formData.program}`, 10, 30);
     doc.text(`Year of Completion: ${formData.year_of_completion}`, 10, 40);
     doc.text(`Courses: ${formData.courses}`, 10, 50);
-    doc.text(`Grade: ${formData.grade}`, 10, 60);
-    doc.text(`Year of Study: ${formData.year_of_study}`, 10, 70);
+    doc.text(`Year of Study: ${formData.year_of_study}`, 10, 60);
 
     // Add QR code to PDF at bottom
     doc.addImage(document.getElementById('qrcode').toDataURL(), 'PNG', 10, 200, 50, 50);
@@ -88,7 +95,13 @@ const TranscriptGenerator = ({ fetchTotals }) => {
       <h2>Generate Transcript</h2>
       <form onSubmit={handleSubmit}>
         <label className="label">Name:</label>
-        <select className="input-field" name="name" value={formData.name} onChange={handleChange} required>
+        <select
+          className="input-field"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        >
           <option value="">Select a student</option>
           {studentOptions.map((student, index) => (
             <option key={index} value={student}>{student}</option>
@@ -96,28 +109,52 @@ const TranscriptGenerator = ({ fetchTotals }) => {
         </select>
 
         <label className="label">Program:</label>
-        <input className="input-field" type="text" name="program" value={formData.program} onChange={handleChange} required />
+        <select
+          className="input-field"
+          name="program"
+          value={formData.program}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select a program</option>
+          {programOptions.map((program, index) => (
+            <option key={index} value={program}>{program}</option>
+          ))}
+        </select>
 
         <label className="label">Year of Completion:</label>
-        <input className="input-field" type="text" name="year_of_completion" value={formData.year_of_completion} onChange={handleChange} required />
+        <select
+          className="input-field"
+          name="year_of_completion"
+          value={formData.year_of_completion}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select year of completion</option>
+          {yearOfCompletionOptions.map((year) => (
+            <option key={year} value={year}>{year}</option>
+          ))}
+        </select>
 
         <label className="label">Courses (select multiple):</label>
-        <select className="input-field" multiple={true} onChange={handleCourseChange}>
+        <select
+          className="input-field"
+          multiple={true}
+          onChange={handleCourseChange}
+        >
           {courseOptions.map((course, index) => (
             <option key={index} value={course}>{course}</option>
           ))}
         </select>
 
-        <label className="label">Grade:</label>
-        <select className="input-field" name="grade" value={formData.grade} onChange={handleChange} required>
-          <option value="">Select grade</option>
-          {gradeOptions.map((grade, index) => (
-            <option key={index} value={grade}>{grade}</option>
-          ))}
-        </select>
-
         <label className="label">Year of Study:</label>
-        <select className="input-field" name="year_of_study" value={formData.year_of_study} onChange={handleChange} required>
+        <select
+          className="input-field"
+          name="year_of_study"
+          value={formData.year_of_study}
+          onChange={handleChange}
+          required
+        >
           <option value="">Select year of study</option>
           {yearOfStudyOptions.map((year, index) => (
             <option key={index} value={year}>{year}</option>
@@ -136,7 +173,7 @@ const TranscriptGenerator = ({ fetchTotals }) => {
           <button className="button" onClick={handleDownloadPDF}>Download PDF</button>
 
           {/* Display certificate template with QR code */}
-          <CertificateTemplate 
+          <CertificateTemplate
             studentName={formData.name}
             courseName={formData.program}
             issueDate={formData.year_of_completion}
