@@ -97,10 +97,12 @@ const Dashboard = () => {
         <a href="#" onClick={(e) => handleGenerate(e, 'transcript')}>Generate Transcripts</a>
         <a href="#" onClick={handleShowRegisterSchool}>Register School</a>
         <a href="#" onClick={handleShowManagePayments}>Manage Payments</a>
-        <div className="logout">
-          <button>Log Out</button>
-        </div>
-      </div>
+    
+    <a href="/">
+        <button>Log Out</button>
+    </a>
+</div>
+
       <div className="main-content">
         <h2>Admin Dashboard</h2>
         <div className="content-body">
