@@ -133,6 +133,7 @@ const CertificateGenerator = ({ fetchTotals }) => {
                 courseName={formData.program}
                 issueDate={formData.year_of_completion}
                 qrCodeValue={qrCodeValue} // Passing the QR code value to the template
+                generatedCode={generatedCode}
               />
             </div>
           )}

@@ -172,6 +172,7 @@ const TranscriptGenerator = ({ fetchTotals }) => {
             studentName={formData.name}
             programName={formData.program}
             yearOfCompletion={formData.year_of_completion}
+            generatedCode={generatedCode}
             courses={formData.courses} // Pass selected courses
             qrCodeValue={qrCodeValue} // Passing the QR code value to the template
           />
