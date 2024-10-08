@@ -1,3 +1,4 @@
+// CertificateTemplate.jsx
 import React from 'react';
 import QRCode from 'react-qr-code'; // Import QR code generator
 import './CertificateTemplate.css'; // Add any necessary styles

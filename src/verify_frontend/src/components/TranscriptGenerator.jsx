@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { verify_backend } from 'declarations/verify_backend';
 import QRCode from 'react-qr-code';
-import jsPDF from 'jspdf';
 import CertificateTemplate from './CertificateTemplate'; // Import CertificateTemplate
 import './TranscriptGenerator.css';  // Importing the custom CSS
+import jsPDF from 'jspdf';
+import './styles.css'; // Import your new CSS file
 
 const TranscriptGenerator = ({ fetchTotals }) => {
   const [formData, setFormData] = useState({
     name: '',
     program: '',
     year_of_completion: '',
-    courses: '',
+    courses: [],
     year_of_study: ''
   });
   const [generatedCode, setGeneratedCode] = useState('');
   const [qrCodeValue, setQrCodeValue] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // State for success message
 
   const studentOptions = [
     'Mathews Tembo', 'Yedidia Chipanta', 'Tembo Profuse', 
@@ -31,7 +33,9 @@ const TranscriptGenerator = ({ fetchTotals }) => {
 
   const courseOptions = [
     'Database Management System', 'Information Security', 'Data Science', 
-    'Project Management', 'Digital Forensics', 'Banking and Finance'
+    'Project Management', 'Digital Forensics', 'Banking and Finance',
+    'Software Engineering', 'Web Development', 'Mobile App Development',
+    'Network Security', 'Machine Learning', 'Cloud Computing', // Add more courses as needed
   ];
 
   const yearOfStudyOptions = ['First Year', 'Second Year', 'Third Year', 'Fourth Year'];
@@ -43,7 +47,7 @@ const TranscriptGenerator = ({ fetchTotals }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
@@ -51,9 +55,9 @@ const TranscriptGenerator = ({ fetchTotals }) => {
 
   const handleCourseChange = (e) => {
     const selectedCourses = Array.from(e.target.selectedOptions, option => option.value);
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
-      courses: selectedCourses.join(', ')
+      courses: selectedCourses // Store selected courses as an array
     }));
   };
 
@@ -66,11 +70,15 @@ const TranscriptGenerator = ({ fetchTotals }) => {
         formData.name,
         formData.program,
         formData.year_of_completion,
-        formData.courses.split(',').map(course => course.trim())
+        formData.courses // Pass the selected courses array directly
       );
       setGeneratedCode(result);
       setQrCodeValue(result); // Set QR code value for Certificate Template
       fetchTotals(); // Update totals after generation
+      setSuccessMessage('Transcript generated successfully!'); // Set success message
+      setTimeout(() => {
+        setSuccessMessage(''); // Clear the message after 3 seconds
+      }, 3000);
     } catch (error) {
       console.error("Error generating transcript:", error);
     }
@@ -82,12 +90,17 @@ const TranscriptGenerator = ({ fetchTotals }) => {
     doc.text(`Name: ${formData.name}`, 10, 20);
     doc.text(`Program: ${formData.program}`, 10, 30);
     doc.text(`Year of Completion: ${formData.year_of_completion}`, 10, 40);
-    doc.text(`Courses: ${formData.courses}`, 10, 50);
-    doc.text(`Year of Study: ${formData.year_of_study}`, 10, 60);
+    doc.text(`Courses: ${formData.courses.join(', ')}`, 10, 50); // Display selected courses
 
-    // Add QR code to PDF at bottom
-    doc.addImage(document.getElementById('qrcode').toDataURL(), 'PNG', 10, 200, 50, 50);
-    doc.save('transcript.pdf');
+    // Create QR code image dynamically for PDF
+    const qrCodeCanvas = document.querySelector("#qrcode > canvas");
+    const qrImage = qrCodeCanvas.toDataURL("image/png");
+
+    doc.addImage(qrImage, 'PNG', 10, 60, 50, 50);
+
+    // Open PDF in new tab
+    const pdfUrl = doc.output('bloburl');
+    window.open(pdfUrl, '_blank');
   };
 
   return (
@@ -141,6 +154,7 @@ const TranscriptGenerator = ({ fetchTotals }) => {
           className="input-field"
           multiple={true}
           onChange={handleCourseChange}
+          required
         >
           {courseOptions.map((course, index) => (
             <option key={index} value={course}>{course}</option>
@@ -164,12 +178,11 @@ const TranscriptGenerator = ({ fetchTotals }) => {
         <button className="button" type="submit">Submit</button>
       </form>
 
+      {successMessage && <div className="success-message">{successMessage}</div>} {/* Display success message */}
+
       {generatedCode && (
         <div>
           <h3>Generated Transcript Code: {generatedCode}</h3>
-          <div id="qrcode">
-            <QRCode value={qrCodeValue} />
-          </div>
           <button className="button" onClick={handleDownloadPDF}>Download PDF</button>
 
           {/* Display certificate template with QR code */}

@@ -9,69 +9,8 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts'; // Removed Legend
 import { FaRobot } from 'react-icons/fa'; // Import AI icon
 import axios from 'axios'; // Import axios for API requests
 
-// Chatboard for user interaction
-const predefinedResponses = {
-  'How do I generate a certificate?': 'To generate a certificate, go to the Certificates section in the dashboard and click on "Generate Certificate".',
-  'How do I generate a transcript?': 'To generate a transcript, visit the Transcripts section and click on "Generate Transcript".',
-  'Where can I register a new school?': 'To register a new school, please visit the "Register School" section in the dashboard.',
-  'hello': 'Hello! How can I assist you today?',
-  'hi': 'Hi there! How can I help you?',
-  'help': 'You can ask questions about generating certificates, transcripts, or managing school-related tasks.',
-  'Where can I manage payments?': 'You can manage payments by visiting the "Manage Payments" section in the dashboard.',
-  'Where can I view top students?': 'Top students can be viewed in the analytics section of the dashboard.',
-};
 
-const Chatboard = ({ fetchAIResponse }) => {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (newMessage.trim()) {
-      const userMessage = newMessage.trim();
-      setMessages([...messages, { id: messages.length + 1, text: userMessage, sender: 'User' }]);
-
-      // Generate bot response based on predefined questions
-      const response = predefinedResponses[userMessage.toLowerCase()] || "I'm sorry, I don't understand that question.";
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { id: prevMessages.length + 1, text: response, sender: 'Bot' },
-      ]);
-
-      // Call AI function to get additional insights
-      const aiResponse = await fetchAIResponse(userMessage);
-      if (aiResponse) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { id: prevMessages.length + 1, text: aiResponse, sender: 'AI' },
-        ]);
-      }
-      setNewMessage(''); // Reset message input
-    }
-  };
-
-  return (
-    <div className="chatboard">
-      <h3>Artificial Intelligence</h3>
-      <div className="chat-messages">
-        {messages.map((message) => (
-          <div key={message.id} className={`chat-message ${message.sender}`}>
-            <strong>{message.sender}: </strong>{message.text}
-          </div>
-        ))}
-      </div>
-      <form onSubmit={handleSendMessage} className="chat-form">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type your message..."
-        />
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  );
-};
 
 const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
@@ -111,16 +50,6 @@ const Dashboard = () => {
     }
   };
 
-  const fetchAIResponse = async (userMessage) => {
-    try {
-      // Replace 'your-ai-endpoint' with your actual AI service endpoint
-      const response = await axios.post('your-ai-endpoint', { message: userMessage });
-      return response.data.reply; // Assuming the AI response has a 'reply' field
-    } catch (error) {
-      console.error("Error fetching AI response:", error);
-      return "I couldn't fetch a response from the AI service.";
-    }
-  };
 
   const handleGenerate = (e, type) => {
     e.preventDefault();
@@ -211,11 +140,6 @@ const Dashboard = () => {
                 </PieChart>
               </div>
 
-              {/* AI Analytics Card */}
-              <div className="card ai-card">
-                <h3>AI Analytics and Predictions</h3>
-                <FaRobot size={50} /> {/* AI Icon */}
-              </div>
             </div>
           )}
 
@@ -227,9 +151,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
-      {/* AI Chatboard */}
-      <Chatboard fetchAIResponse={fetchAIResponse} />
     </div>
   );
 };
