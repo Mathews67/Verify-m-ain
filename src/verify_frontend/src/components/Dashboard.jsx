@@ -5,11 +5,9 @@ import RegisterSchool from './RegisterSchool';
 import ManagePayments from './ManagePayments';
 import './Dashboard.css';
 import { verify_backend } from 'declarations/verify_backend';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts'; // Removed Legend
-import { FaRobot } from 'react-icons/fa'; // Import AI icon
-import axios from 'axios'; // Import axios for API requests
-
-
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { FaRobot } from 'react-icons/fa'; 
+import axios from 'axios'; 
 
 
 const Dashboard = () => {
@@ -50,7 +48,6 @@ const Dashboard = () => {
     }
   };
 
-
   const handleGenerate = (e, type) => {
     e.preventDefault();
     setFormType(type);
@@ -80,6 +77,19 @@ const Dashboard = () => {
     setFormType('');
   };
 
+  const handleDownload = (url, fileName) => {
+    // Opens the file in a new tab
+    const newTab = window.open(url, '_blank');
+    if (newTab) {
+      newTab.focus();
+    }
+    // Initiates download if needed
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  };
+
   const pieData = [
     { name: 'Certificates', value: totalCertificates },
     { name: 'Transcripts', value: totalTranscripts },
@@ -92,16 +102,16 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="sidebar">
-        <h1>Admin Dashboard</h1>
+        <h1>Dashboard</h1>
         <a href="#" onClick={(e) => handleGenerate(e, 'certificate')}>Generate Certificate</a>
         <a href="#" onClick={(e) => handleGenerate(e, 'transcript')}>Generate Transcripts</a>
         <a href="#" onClick={handleShowRegisterSchool}>Register School</a>
         <a href="#" onClick={handleShowManagePayments}>Manage Payments</a>
     
-    <a href="/">
-        <button>Log Out</button>
-    </a>
-</div>
+        <a href="/">
+          <button>Log Out</button>
+        </a>
+      </div>
 
       <div className="main-content">
         <h2>Admin Dashboard</h2>
@@ -129,7 +139,6 @@ const Dashboard = () => {
 
           {!showForm && !showRegisterSchool && !showManagePayments && (
             <div className="cards">
-              {/* Updated Pie Chart Card */}
               <div className="card chart-card">
                 <h3>Analytics</h3>
                 <PieChart width={160} height={160}>
@@ -138,16 +147,25 @@ const Dashboard = () => {
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip /> {/* Tooltip on hover */}
+                  <Tooltip />
                 </PieChart>
               </div>
-
             </div>
           )}
 
           <div className="form-container">
-            {showForm && formType === 'certificate' && <CertificateGenerator onClose={handleCloseForm} />}
-            {showForm && formType === 'transcript' && <TranscriptGenerator onClose={handleCloseForm} />}
+            {showForm && formType === 'certificate' && (
+              <CertificateGenerator 
+                onClose={handleCloseForm} 
+                onDownload={(url) => handleDownload(url, 'certificate.pdf')}
+              />
+            )}
+            {showForm && formType === 'transcript' && (
+              <TranscriptGenerator 
+                onClose={handleCloseForm} 
+                onDownload={(url) => handleDownload(url, 'transcript.pdf')}
+              />
+            )}
             {showRegisterSchool && <RegisterSchool onClose={handleCloseForm} />}
             {showManagePayments && <ManagePayments onClose={handleCloseForm} />}
           </div>
