@@ -1,0 +1,47 @@
+.transcript-template {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .transcript-template h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .transcript-details {
+    margin-bottom: 20px;
+  }
+  
+  .transcript-details p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .transcript-details h3 {
+    margin-top: 15px;
+    color: #444;
+  }
+  
+  .transcript-details ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .transcript-details li {
+    background-color: #e7f1ff;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: #333;
+  }
+  
+  .qr-code {
+    text-align: center;
+  }
+  
