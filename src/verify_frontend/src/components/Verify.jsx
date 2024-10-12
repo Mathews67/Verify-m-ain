@@ -35,7 +35,12 @@ const Verify = () => {
             name: cert.name,
             program: cert.program,
             yearOfCompletion: cert.year_of_completion,
-            qrCodeValue: cert.qrCodeValue || '', // Assuming this is part of the certificate data
+            qrCodeValue: JSON.stringify({
+              studentId: cert.student_id,
+              name: cert.name,
+              program: cert.program,
+              yearOfCompletion: cert.year_of_completion,
+            }), // Create a string to be embedded in the QR code
           });
         } else if ("Transcript" in document) {
           const trans = document.Transcript;
@@ -100,7 +105,7 @@ const Verify = () => {
             studentId={certificateData.studentId}
             courseName={certificateData.program}
             issueDate={certificateData.yearOfCompletion}
-            qrCodeValue={certificateData.qrCodeValue} // Pass QR code value if available
+            qrCodeValue={certificateData.qrCodeValue} // Pass QR code value with details
           />
         </div>
       )}
