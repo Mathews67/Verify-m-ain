@@ -13,7 +13,7 @@ const CertificateTemplate = ({ studentName, courseName, issueDate, qrCodeValue,g
       <h3>{courseName}</h3>
       <p>Issued : {issueDate}</p>
       <p>cert={generatedCode}</p>
-      <p>Signature: Prof Tembo Mathews</p>
+      <p>Signature:DR. ECZ</p>
 
       {/* QR Code Display */}
       {qrCodeValue && (
